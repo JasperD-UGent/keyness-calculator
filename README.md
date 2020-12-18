@@ -1,6 +1,14 @@
 # keyness-calculator
 ## In Python
-
+### Steps performed by the script
+#### Step_1
+$
+#### Step_2
+$
+#### Step_3
+$
+#### Step_4
+$
 ## References
 - Everitt, B.S. (2002). The Cambridge Dictionary of Statistics (2nd ed.). Cambridge University Press
 - Gabrielatos, C. (2018). Keyness Analysis: nature, metrics and techniques. In C. Taylor & A. Marchi (Eds.), Corpus Approaches to Discourse: A Critical Review. Routledge.
