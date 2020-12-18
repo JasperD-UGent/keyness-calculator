@@ -1,12 +1,18 @@
 # keyness-calculator
-<p>This module allows you to analyse the keyness of items in a study corpus compared to a reference corpus. The keyness calculator takes 3-tuples consisting of the token, part-of-speech tag and lemma as input, meaning that you need to have your corpora tokenised, part-of-speech tagged an lemmatised beforehand. The tuples can be introduced into the keyness calculator as CSV or TSV files (one line per tuple; one file = one corpus document; one folder of files = one subcorpus; one folder of subcorpora = one corpus), or they can also be organised in a Python dictionary (keys = subcorpora; values = list of lists one list = one corpus document of tuples) and directly passed into the calculator. Below you can find a concrete usage example for both input types and an overview of the keyness calculation methodology, which consists of four main steps.</p>
-<p>**NOTE**: the example corpus used for the CSV/TSV input type is included in the <code>exampleCorpus</code> folder of this GitHub repository. This dummy corpus was created based on the [UD Spanish AnCora treebank](https://universaldependencies.org/treebanks/es_ancora/index.html). The treebank sentences were randomly divided over six documents, which were, at their turn, equally divided over three subcorpora (one subcorpora for the study corpus, and two for the reference corpus). The corpus adheres to the required folder structure: <code>corpus_folder/subcorpus_folders/document_files</code>.</p>
+This module allows you to analyse the keyness of items in a study corpus compared to a reference corpus. The keyness calculator takes 3-tuples consisting of the token, part-of-speech tag and lemma as input, meaning that you need to have your corpora tokenised, part-of-speech tagged an lemmatised beforehand. The tuples can be introduced into the keyness calculator as CSV or TSV files (one line per tuple; one file = one corpus document; one folder of files = one subcorpus; one folder of subcorpora = one corpus), or they can also be organised in a Python dictionary (keys = subcorpora; values = list of lists [one list = one corpus document] of tuples) and directly passed into the calculator. Below you can find a concrete usage example for both input types and an overview of the keyness calculation methodology, which consists of four main steps.
+
+
+**NOTE**: the example corpus used for the CSV/TSV input type is included in the <code>exampleCorpus</code> folder of this GitHub repository. This dummy corpus was created based on the [UD Spanish AnCora treebank](https://universaldependencies.org/treebanks/es_ancora/index.html). The treebank sentences were randomly divided over six documents, which were, at their turn, equally divided over three subcorpora (one subcorpora for the study corpus, and two for the reference corpus). The corpus adheres to the required folder structure: <code>corpus_folder/subcorpus_folders/document_files</code>.
 ## Usage example
 ### Input
-<p>The usage example is presented in the <code>keynessCalculator_example.py</code> file. It contains a usage example for both input types (CSV/TSV files or Python dictionary). It only requires two arguments, namely the study corpus (passed to the first-position <code>input_sc</code> argument) and the reference corpus (passed to the second-position <code>input_rc</code> argument). For CSV/TSV files as input type, the argument is simply the path to the corpus folder; for the Python dictionary as input, you need to construct a 2-tuple of the corpus name followed by the Python dictionary in second position. To learn more about all the possible other arguments which can be passed to the <code>init_keyness_calculator</code> function, have a look at the [source code](https://github.com/JasperD-UGent/keyness-calculator/blob/main/utils.py).</p>
-
+The usage example is presented in the <code>keynessCalculator_example.py</code> file. It contains a usage example for both input types (CSV/TSV files or Python dictionary). The <code>init_keyness_calculator</code> function used to perform the keyness calculations only requires two arguments, namely the study corpus (passed to the first-position <code>input_sc</code> argument) and the reference corpus (passed to the second-position <code>input_rc</code> argument). For CSV/TSV files as input type, the argument is simply the path to the corpus folder; for the Python dictionary as input, you need to construct a 2-tuple of the corpus name followed by the Python dictionary in second position. To learn more about all the possible other arguments which can be passed to the <code>init_keyness_calculator</code> function, have a look at the [source code](https://github.com/JasperD-UGent/keyness-calculator/blob/main/utils.py).
 ### Output
-$
+The output of intermediary steps (frequency dictionaries (per item and totals) and dispersion values) are saved per corpus into an automatically created <code>prep</code> folder. The final results are stored in the automatically created <code>output</code> folder, in a subdirectory named <code>[study_corpus]_VS_[reference_corpus]</code>. Four output files are created:
+- An Excel file containing three sheets:
+  - "all", in which the values for each item are visualised
+  - "top-N", in which the results for the top-N CKIs (the value for N can be changed in the <code>number_ckis_want_analyse</code> argument) are presented
+  - "selection", in which the results for the custom selection of items (which can be passed to the function through the <code>selection_items</code> argument) are presented
+- The content of those three Excel sheets in three separate JSON files
 ## Keyness calculation methodology
 ### Step_1
 $
@@ -17,7 +23,7 @@ $
 ### Step_4
 $
 ## Required Python modules
-<p>The keyness calculator uses the Python modules mentioned below, so you need to have them installed for the script to work.</p>
+The keyness calculator uses the Python modules mentioned below, so you need to have them installed for the script to work.
 - [numpy](https://pypi.org/project/numpy/)
 - [scikit-learn](https://pypi.org/project/scikit-learn/)
 - [Xlsxwriter](https://pypi.org/project/XlsxWriter/)
