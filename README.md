@@ -1,13 +1,19 @@
 # keyness-calculator
-## In Python
-### Steps performed by the script
-#### Step_1
 $
-#### Step_2
+## Usage example
 $
-#### Step_3
+### Input
 $
-#### Step_4
+### Output
+$
+## Steps performed by the script
+### Step_1
+$
+### Step_2
+$
+### Step_3
+$
+### Step_4
 $
 ## References
 - Everitt, B.S. (2002). The Cambridge Dictionary of Statistics (2nd ed.). Cambridge University Press
