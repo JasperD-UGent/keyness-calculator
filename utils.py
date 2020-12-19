@@ -128,4 +128,4 @@ def init_keyness_calculator(
     meta(name_sc, desired_pos, lemma_or_token, maintain_subcorpora, divide_number_docs_by)
     meta(name_rc, desired_pos, lemma_or_token, maintain_subcorpora, divide_number_docs_by)
 
-    return {"keyness_all": l_d_keyn_sc, "keyness_top-N": l_d_keyn_top_n_sc, "keyness_selection": l_d_keyn_sel_items_sc}
+    return {"all": l_d_keyn_sc, "top-N": l_d_keyn_top_n_sc, "selection": l_d_keyn_sel_items_sc}
