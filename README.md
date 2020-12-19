@@ -1,5 +1,5 @@
 # keyness-calculator
-This module allows you to analyse the keyness of items in a study corpus compared to a reference corpus. The keyness calculator takes 3-tuples consisting of a token, part-of-speech tag and lemma as input, meaning that you need to have your corpora tokenised, part-of-speech tagged an lemmatised beforehand. The tuples can be introduced into the keyness calculator as CSV or TSV files (one line per tuple; one file = one corpus document; one folder of files = one subcorpus; one folder of subcorpora = one corpus), or they can also be organised in a Python dictionary (keys = subcorpora; values = list of lists \[one list = one corpus document] of tuples) and directly passed into the calculator. Below you can find a concrete usage example for both input types and an overview of the keyness calculation methodology, which consists of four main steps.
+This module allows you to analyse the keyness of items in a study corpus compared to a reference corpus. The keyness calculator takes 3-tuples consisting of a token, part-of-speech tag and lemma as input, meaning that you need to have your corpora tokenised, part-of-speech tagged an lemmatised beforehand. The tuples can be introduced into the keyness calculator as CSV or TSV files (one line per tuple; one file = one corpus document; one folder of files = one subcorpus; one folder of subcorpora = one corpus), or they can also be organised in a Python dictionary (keys = subcorpora; values = list of lists \[one list = one corpus document] of tuples) and directly passed into the calculator. Below you can find a concrete usage example for both input types and an overview of the main steps performed by the underlying script.
 
 
 **NOTE**: the example corpus used for the CSV/TSV input type is included in the <code>exampleCorpus</code> folder of this GitHub repository. This dummy corpus was created based on the [UD Spanish AnCora treebank](https://universaldependencies.org/treebanks/es_ancora/index.html). The treebank sentences were randomly divided over six documents, which were, at their turn, equally divided over three subcorpora (one subcorpora for the study corpus, and two for the reference corpus). The corpus adheres to the required folder structure: <code>corpus_folder/subcorpus_folders/document_files</code>.
@@ -50,7 +50,7 @@ The output of intermediary steps (frequency dictionaries \[per item and totals] 
 - The content of those three Excel sheets in three separate JSON files
 
 **NOTE**: the <code>init_keyness_calculator</code> function also returns those three types of results as a Python dictionary (keys: "all", "top-N" and "selection").
-## Keyness calculation methodology
+## Method
 ### Step_1
 1. Convert corpora into frequency dictionaries (per item and totals).
 
@@ -60,7 +60,7 @@ The output of intermediary steps (frequency dictionaries \[per item and totals] 
 
 2. Store this intermediate output in <code>prep</code> folder.
 ### Step_3
-1. Calculate the keyness values based on one of the following metrics:
+1. Calculate the keyness values. Parameters such as the type of frequencies used to perform the calculations (absolute or adjusted, with or without Laplace smoothing) and the keyness threshold can all be passed to the <code>init_keyness_calculator</code> function as additional keyword arguments. As for the type of metric, the five following methods are offered:
 - DIFF (Gabrielatos & Marchi, 2011);
 - Ratio (Kilgarriff, 2009);
 - OddsRatio (Everitt, 2002; Pojanapunya & Watson Todd, 2016);
