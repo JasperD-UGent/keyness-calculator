@@ -8,6 +8,9 @@ This module allows you to analyse the keyness of items in a study corpus compare
 The usage example is presented in the <code>keynessCalculator_example.py</code> file. It contains a usage example for both input types (CSV/TSV files or Python dictionary). The <code>init_keyness_calculator</code> function used to perform the keyness calculations only requires two arguments, namely the study corpus (passed to the first-position <code>input_sc</code> argument) and the reference corpus (passed to the second-position <code>input_rc</code> argument). For CSV/TSV files as input type, the argument is simply the path to the corpus folder; for the Python dictionary as input, you need to construct a 2-tuple of the corpus name followed by the Python dictionary in second position. To learn more about all the possible other arguments which can be passed to the <code>init_keyness_calculator</code> function, have a look at the [source code](https://github.com/JasperD-UGent/keyness-calculator/blob/main/utils.py).
 ```python
 def main():
+    
+    # CSV/TSV files as input
+    
     input_sc = os.path.join("exampleCorpora", "SC_singleSubc_1")
     input_rc = os.path.join("exampleCorpora", "RC_multSubc_1")
     keyness_dictionary_1 = init_keyness_calculator(input_sc, input_rc)
@@ -18,6 +21,8 @@ def main():
                           [("tok4", "NOUN", "lem3"), ("tok3", "VERB", "lem2")],
                           [("tok4", "NOUN", "lem3"), ("tok3", "VERB", "lem2")]]
     })
+    
+    # Python dictionary as input
 
     input_rc = ("RC_multSubc_2", {
         "RC_subcorpus1": [[("tok1", "NOUN", "lem1"), ("tok2", "NOUN", "lem1")],
@@ -43,6 +48,8 @@ The output of intermediary steps (frequency dictionaries (per item and totals) a
   - "top-N", in which the results for the top-N CKIs (the value for N can be changed in the <code>number_ckis_want_analyse</code> argument) are presented
   - "selection", in which the results for the custom selection of items (which can be passed to the function through the <code>selection_items</code> argument) are presented
 - The content of those three Excel sheets in three separate JSON files
+
+**NOTE**: the <code>init_keyness_calculator</code> function also returns those three types of results as a Python dictionary (keys: "all", "top-N" and "selection").
 ## Keyness calculation methodology
 ### Step_1
 1. Convert corpora into frequency dictionaries (per item and totals).
