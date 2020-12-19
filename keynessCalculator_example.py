@@ -3,6 +3,9 @@ from utils import init_keyness_calculator
 
 
 def main():
+    
+    # CSV/TSV files as input
+    
     input_sc = os.path.join("exampleCorpora", "SC_singleSubc_1")
     input_rc = os.path.join("exampleCorpora", "RC_multSubc_1")
     keyness_dictionary_1 = init_keyness_calculator(input_sc, input_rc)
@@ -13,6 +16,8 @@ def main():
                           [("tok4", "NOUN", "lem3"), ("tok3", "VERB", "lem2")],
                           [("tok4", "NOUN", "lem3"), ("tok3", "VERB", "lem2")]]
     })
+    
+    # Python dictionary as input
 
     input_rc = ("RC_multSubc_2", {
         "RC_subcorpus1": [[("tok1", "NOUN", "lem1"), ("tok2", "NOUN", "lem1")],
