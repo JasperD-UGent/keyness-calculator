@@ -14,6 +14,8 @@ def main():
     input_sc = os.path.join("exampleCorpora", "SC_singleSubc_1")
     input_rc = os.path.join("exampleCorpora", "RC_multSubc_1")
     keyness_dictionary_1 = init_keyness_calculator(input_sc, input_rc)
+    
+    # Python dictionary as input
 
     input_sc = ("SC_singleSubc_2", {
         "SC_subcorpus1": [[("tok1", "NOUN", "lem1"), ("tok2", "NOUN", "lem1")],
@@ -21,8 +23,6 @@ def main():
                           [("tok4", "NOUN", "lem3"), ("tok3", "VERB", "lem2")],
                           [("tok4", "NOUN", "lem3"), ("tok3", "VERB", "lem2")]]
     })
-    
-    # Python dictionary as input
 
     input_rc = ("RC_multSubc_2", {
         "RC_subcorpus1": [[("tok1", "NOUN", "lem1"), ("tok2", "NOUN", "lem1")],
