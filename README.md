@@ -67,7 +67,7 @@ The output of intermediary steps (frequency dictionaries \[per item and totals] 
 - LogRatio (Hardie, 2014);
 - DiffCoefficient (Hofland & Johansson, 1982).
 
-2. Store the results of this keyness analysis in the <code>output</code> folder.
+2. Store the results of the keyness analysis in the <code>output</code> folder.
 ### Step_4
 1. Construct meta file containing the information of the last query.
 2. Save this meta file into the <code>prep</code> folder (when the keyness calculator is initialised, it first checks this meta file, and when the query criteria are identical, the calculator will immediately load the intermediate output for the corpus in question in the <code>prep</code> folder, instead of again calculating the frequencies from scratch).
