@@ -42,7 +42,7 @@ def main():
     keyness_dictionary_2 = init_keyness_calculator(input_sc, input_rc)
 ```
 ### Output
-The output of intermediary steps (frequency dictionaries (per item and totals) and dispersion values) are saved per corpus into an automatically created <code>prep</code> folder. The final results are stored in the automatically created <code>output</code> folder, in a subdirectory named <code>[study_corpus]\_VS_[reference_corpus]</code>. Four output files are created:
+The output of intermediary steps (frequency dictionaries \[per item and totals] and dispersion values) are saved per corpus into an automatically created <code>prep</code> folder. The final results are stored in the automatically created <code>output</code> folder, in a subdirectory named <code>[study_corpus]\_VS_[reference_corpus]</code>. Four output files are created:
 - An Excel file containing three sheets:
   - "all", in which the values for each item are visualised
   - "top-N", in which the results for the top-N CKIs (the value for N can be changed in the <code>number_ckis_want_analyse</code> argument) are presented
