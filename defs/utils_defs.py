@@ -81,7 +81,7 @@ def check_meta(corpus_name, desired_pos, lem_or_tok, maintain_subcorpora, div_n_
             d_meta_corpus = json.load(f_meta)
         f_meta.close()
 
-        if d_meta_corpus["desired_pos"] == desired_pos\
+        if tuple(d_meta_corpus["desired_pos"]) == desired_pos\
                 and d_meta_corpus["lemma_or_token"] == lem_or_tok\
                 and d_meta_corpus["maintain_subcorpora"] == maintain_subcorpora\
                 and d_meta_corpus["divide_number_docs_by"] == div_n_docs_by:
@@ -977,11 +977,11 @@ def dispersion(corpus_name, d_freq_corpus, d_freq_cps, d_sum_cps, desired_pos):
 # STEP_3: calculate keyness (data stored in "[SC]_VS_[RC]" folder)
 
 
-def keyness(name_sc, name_rc, lem_or_tok, approx, stat_sign_thresh, degr_of_freed, keyn_thresh, freq_type,
+def keyness(name_sc, name_rc, lem_or_tok, approx, stat_sign_thresh, degrs_of_freed, keyn_thresh, freq_type,
             keyn_metric, n_ckis_want_analyse, sel_items, d_freq_abs_adj_sc, d_sum_abs_adj_sc, d_freq_abs_adj_rc,
             d_sum_abs_adj_rc):
     l_d_keyn, l_d_keyn_top_n, l_d_keyn_sel_items = keyness_calculation(
-        name_sc, name_rc, lem_or_tok, approx, stat_sign_thresh, degr_of_freed, keyn_thresh, freq_type, keyn_metric,
+        name_sc, name_rc, lem_or_tok, approx, stat_sign_thresh, degrs_of_freed, keyn_thresh, freq_type, keyn_metric,
         n_ckis_want_analyse, sel_items, d_freq_abs_adj_sc, d_freq_abs_adj_rc, d_sum_abs_adj_sc, d_sum_abs_adj_rc)
 
     return l_d_keyn, l_d_keyn_top_n, l_d_keyn_sel_items
