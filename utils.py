@@ -26,10 +26,10 @@ def init_keyness_calculator(
     """Initialise the keyness calculator.
     :param input_sc: study corpus. Either a string to a folder (root = corpus; subdirectories = subcorpora;
         files in subdirectories = documents) or a tuple containing the corpus name and the corpus in dictionary format (
-        keys = subcorpora; values = a list of lists [= documents] containing token-POS-lemma tuples)
+        keys = subcorpora; values = a list of lists [= documents] containing token-POS-lemma tuples).
     :param input_rc: reference corpus. Either a path to a folder (root = corpus; subdirectories = subcorpora;
         files in subdirectories = documents) or a tuple containing the corpus name and the corpus in dictionary format (
-        keys = subcorpora; values = a list of lists [= documents] containing token-POS-lemma tuples)
+        keys = subcorpora; values = a list of lists [= documents] containing token-POS-lemma tuples).
     :param mapping_custom_to_ud: if you work with custom POS tags, dictionary which maps custom tags to UD counterparts.
     :param mapping_ud_to_custom: if you work with custom POS tags, dictionary which maps UD tags to custom counterparts.
     :param desired_pos: tuple of UD tags which should be taken into account in the keyness calculations.
