@@ -38,6 +38,4 @@ def main():
 
 
 if __name__ == "__main__":
-    print("""if __name__ == "__main__":""")
-
     main()

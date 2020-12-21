@@ -1,5 +1,5 @@
 from defs.utils_defs import define_additional_variables, check_meta
-from defs.utils_defs import load_json_sub1_str_to_obj, load_json_sub1
+from defs.utils_defs import load_json_sub1, load_json_sub1_str_to_obj
 from defs.utils_defs import corpora_to_d_freq, dispersion, keyness, meta
 from typing import Dict, List, Optional, Tuple, Union
 
