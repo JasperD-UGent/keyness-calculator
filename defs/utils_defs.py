@@ -945,7 +945,7 @@ def keyness_calculation(corpus_name_sc, corpus_name_rc, lem_or_tok, approx, stat
 def d_meta(corpus_name, desired_pos, lem_or_tok, maintain_subcorpora, div_n_docs_by):
     d_meta_corpus = {"desired_pos": desired_pos,
                      "lemma_or_token": lem_or_tok,
-                     "corpus_parts_dispersion": maintain_subcorpora,
+                     "maintain_subcorpora": maintain_subcorpora,
                      "divide_number_docs_by": div_n_docs_by}
 
     dump_json_sub1("prep", corpus_name, "meta", d_meta_corpus)
