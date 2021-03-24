@@ -73,9 +73,9 @@ The output of intermediary steps (frequency dictionaries \[per item and totals] 
 2. Save this meta file into the <code>prep</code> folder (when the keyness calculator is initialised, it first checks this meta file, and when the query criteria are identical, the calculator will immediately load the intermediate output for the corpus in question in the <code>prep</code> folder, instead of again calculating the frequencies from scratch).
 ## Required Python modules
 The keyness calculator uses the Python modules mentioned below, so you need to have them installed for the script to work.
-- [numpy](https://pypi.org/project/numpy/) (<=1.18.2)
-- [scikit-learn](https://pypi.org/project/scikit-learn/) (<=0.24.1)
-- [Xlsxwriter](https://pypi.org/project/XlsxWriter/) (<=1.2.8)
+- [numpy](https://pypi.org/project/numpy/) (~=1.18.2)
+- [scikit-learn](https://pypi.org/project/scikit-learn/) (~=0.24.1)
+- [Xlsxwriter](https://pypi.org/project/XlsxWriter/) (~=1.2.8)
 ## References
 - Everitt, B.S. (2002). The Cambridge Dictionary of Statistics (2nd ed.). Cambridge University Press
 - Gabrielatos, C. (2018). Keyness Analysis: nature, metrics and techniques. In C. Taylor & A. Marchi (Eds.), Corpus Approaches to Discourse: A Critical Review. Routledge.
