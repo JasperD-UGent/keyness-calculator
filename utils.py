@@ -101,8 +101,8 @@ def init_keyness_calculator(
         d_freq_abs_adj_sc, d_sum_abs_adj_sc = dispersion(name_sc, d_freq_sc, d_freq_cps_sc, d_sum_cps_sc, desired_pos)
 
     if load_from_files_rc:
-        d_freq_abs_adj_rc = load_json_str_to_obj(os.path.join("prep", name_rc, name_rc + "_d_freq_abs_adj"))
-        d_sum_abs_adj_rc = load_json(os.path.join("prep", name_rc, name_rc + "_sum_words_desired_pos_abs_adj"))
+        d_freq_abs_adj_rc = load_json_str_to_obj(os.path.join("prep", name_rc, name_rc + "_d_freq_abs_adj.json"))
+        d_sum_abs_adj_rc = load_json(os.path.join("prep", name_rc, name_rc + "_sum_words_desired_pos_abs_adj.json"))
     else:
         d_freq_rc, d_freq_cps_rc, d_sum_cps_rc = corpora_to_d_freq(
             name_rc, input_rc, mapping_custom_to_ud, mapping_ud_to_custom, desired_pos, lemma_or_token,
