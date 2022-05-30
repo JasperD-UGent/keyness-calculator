@@ -79,9 +79,11 @@ def init_keyness_calculator(
 
     # check meta file last keyness calculation with selected corpora
     load_from_files_sc = check_meta(
-        name_sc, desired_pos, lemma_or_token, maintain_subcorpora, divide_number_docs_by)
+        name_sc, desired_pos, lemma_or_token, maintain_subcorpora, divide_number_docs_by
+    )
     load_from_files_rc = check_meta(
-        name_rc, desired_pos, lemma_or_token, maintain_subcorpora, divide_number_docs_by)
+        name_rc, desired_pos, lemma_or_token, maintain_subcorpora, divide_number_docs_by
+    )
 
     # perform steps
 
@@ -96,7 +98,8 @@ def init_keyness_calculator(
     else:
         d_freq_sc, d_freq_cps_sc, d_sum_cps_sc = corpora_to_d_freq(
             name_sc, input_sc, mapping_custom_to_ud, mapping_ud_to_custom, desired_pos, lemma_or_token,
-            maintain_subcorpora, divide_number_docs_by)
+            maintain_subcorpora, divide_number_docs_by
+        )
         d_freq_abs_adj_sc, d_sum_abs_adj_sc = dispersion(name_sc, d_freq_sc, d_freq_cps_sc, d_sum_cps_sc, desired_pos)
 
     if load_from_files_rc:
@@ -105,7 +108,8 @@ def init_keyness_calculator(
     else:
         d_freq_rc, d_freq_cps_rc, d_sum_cps_rc = corpora_to_d_freq(
             name_rc, input_rc, mapping_custom_to_ud, mapping_ud_to_custom, desired_pos, lemma_or_token,
-            maintain_subcorpora, divide_number_docs_by)
+            maintain_subcorpora, divide_number_docs_by
+        )
         d_freq_abs_adj_rc, d_sum_abs_adj_rc = dispersion(name_rc, d_freq_rc, d_freq_cps_rc, d_sum_cps_rc, desired_pos)
 
     #   - STEP_3: calculate keyness (data stored in "[SC]_VS_[RC]" folder)
@@ -114,7 +118,8 @@ def init_keyness_calculator(
     l_d_keyn_sc, l_d_keyn_top_n_sc, l_d_keyn_sel_items_sc = keyness(
         name_sc, name_rc, lemma_or_token, approximation, statistical_significance_threshold_bic, degrees_of_freedom,
         keyness_threshold, frequency_type, keyness_metric, number_ckis_want_analyse, selection_items, d_freq_abs_adj_sc,
-        d_sum_abs_adj_sc, d_freq_abs_adj_rc, d_sum_abs_adj_rc)
+        d_sum_abs_adj_sc, d_freq_abs_adj_rc, d_sum_abs_adj_rc
+    )
 
     #   - STEP_4: store information of last query in meta file (data stored per corpus in "prep" folder)
     print("Performing STEP_4.")
