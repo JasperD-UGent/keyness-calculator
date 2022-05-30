@@ -1,6 +1,5 @@
 from utils import init_keyness_calculator
 import os
-import sys
 
 
 def main():
