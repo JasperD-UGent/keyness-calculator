@@ -1,7 +1,0 @@
-# output script
-output/
-prep/
-
-# Python
-__pycache__/
-defs/__pycache__/
