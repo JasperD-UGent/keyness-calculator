@@ -88,7 +88,6 @@ def init_keyness_calculator(
     #   - STEP_1 and STEP_2: convert corpora into frequency dictionaries (data stored per corpus in "prep" folder) and
     #     apply dispersion metric (DPnorm; Gries, 2008; Lijffijt & Gries, 2012), calculate adjusted frequencies and
     #     update frequency dictionaries (data stored per corpus in "prep" folder)
-
     print("Performing STEP_1 and STEP_2.")
 
     if load_from_files_sc:
@@ -110,7 +109,6 @@ def init_keyness_calculator(
         d_freq_abs_adj_rc, d_sum_abs_adj_rc = dispersion(name_rc, d_freq_rc, d_freq_cps_rc, d_sum_cps_rc, desired_pos)
 
     #   - STEP_3: calculate keyness (data stored in "[SC]_VS_[RC]" folder)
-
     print("Performing STEP_3.")
 
     l_d_keyn_sc, l_d_keyn_top_n_sc, l_d_keyn_sel_items_sc = keyness(
@@ -119,7 +117,6 @@ def init_keyness_calculator(
         d_sum_abs_adj_sc, d_freq_abs_adj_rc, d_sum_abs_adj_rc)
 
     #   - STEP_4: store information of last query in meta file (data stored per corpus in "prep" folder)
-
     print("Performing STEP_4.")
 
     meta(name_sc, desired_pos, lemma_or_token, maintain_subcorpora, divide_number_docs_by)
