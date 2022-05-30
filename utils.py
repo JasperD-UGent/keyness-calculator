@@ -1,6 +1,7 @@
 from defs.utils_defs import define_additional_variables, check_meta
-from defs.utils_defs import load_json_sub1, load_json_sub1_str_to_obj
+from defs.utils_defs import load_json, load_json_str_to_obj
 from defs.utils_defs import corpora_to_d_freq, dispersion, keyness, meta
+import os
 from typing import Dict, List, Optional, Tuple, Union
 
 
@@ -73,12 +74,10 @@ def init_keyness_calculator(
     selection_items = [] if selection_items is None else selection_items
     
     # define additional variables
-
     name_sc = define_additional_variables(input_sc)
     name_rc = define_additional_variables(input_rc)
 
     # check meta file last keyness calculation with selected corpora
-
     load_from_files_sc = check_meta(
         name_sc, desired_pos, lemma_or_token, maintain_subcorpora, divide_number_docs_by)
     load_from_files_rc = check_meta(
@@ -93,9 +92,8 @@ def init_keyness_calculator(
     print("Performing STEP_1 and STEP_2.")
 
     if load_from_files_sc:
-        d_freq_abs_adj_sc = load_json_sub1_str_to_obj("prep", name_sc, "_d_freq_abs_adj")
-        d_sum_abs_adj_sc = load_json_sub1("prep", name_sc, "_sum_words_desired_pos_abs_adj")
-
+        d_freq_abs_adj_sc = load_json_str_to_obj(os.path.join("prep", name_sc, name_sc + "_d_freq_abs_adj.json"))
+        d_sum_abs_adj_sc = load_json(os.path.join("prep", name_sc, name_sc + "_sum_words_desired_pos_abs_adj.json"))
     else:
         d_freq_sc, d_freq_cps_sc, d_sum_cps_sc = corpora_to_d_freq(
             name_sc, input_sc, mapping_custom_to_ud, mapping_ud_to_custom, desired_pos, lemma_or_token,
@@ -103,9 +101,8 @@ def init_keyness_calculator(
         d_freq_abs_adj_sc, d_sum_abs_adj_sc = dispersion(name_sc, d_freq_sc, d_freq_cps_sc, d_sum_cps_sc, desired_pos)
 
     if load_from_files_rc:
-        d_freq_abs_adj_rc = load_json_sub1_str_to_obj("prep", name_rc, "_d_freq_abs_adj")
-        d_sum_abs_adj_rc = load_json_sub1("prep", name_rc, "_sum_words_desired_pos_abs_adj")
-
+        d_freq_abs_adj_rc = load_json_str_to_obj(os.path.join("prep", name_rc, name_rc + "_d_freq_abs_adj"))
+        d_sum_abs_adj_rc = load_json(os.path.join("prep", name_rc, name_rc + "_sum_words_desired_pos_abs_adj"))
     else:
         d_freq_rc, d_freq_cps_rc, d_sum_cps_rc = corpora_to_d_freq(
             name_rc, input_rc, mapping_custom_to_ud, mapping_ud_to_custom, desired_pos, lemma_or_token,

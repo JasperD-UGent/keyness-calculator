@@ -1,122 +1,111 @@
-import codecs
-import os
-import json
 from ast import literal_eval
-import csv
+import codecs
 import copy
-import random
+import csv
+import json
 import numpy as np
-from sklearn.cluster import AgglomerativeClustering
 import operator
+import os
+import random
+from sklearn.cluster import AgglomerativeClustering
 import xlsxwriter
-
-# counter that prints every multiple of 250
 
 
 def multiple_250(counter):
+    """Counter which prints every multiple of 250."""
 
     if (counter / 250).is_integer():
         print(counter)
     else:
         pass
 
-# dump JSON file in folder at root/subfolder level
 
+def dump_json(path_to_direc, fn, variable):
+    """Dump given variable to given JSON filename on given path."""
 
-def dump_json_sub1(root_direc, direc_sub1, fn, variable):
+    if not os.path.isdir(path_to_direc):
+        os.makedirs(path_to_direc)
 
-    if not os.path.isdir(os.path.join(root_direc)):
-        os.mkdir(os.path.join(root_direc))
-
-    if not os.path.isdir(os.path.join(root_direc, direc_sub1)):
-        os.mkdir(os.path.join(root_direc, direc_sub1))
-
-    fn_complete = fn + ".json"
-
-    with codecs.open(os.path.join(root_direc, direc_sub1, fn_complete), "w", "utf-8-sig") as f:
+    with codecs.open(os.path.join(path_to_direc, fn), "w", "utf-8") as f:
         json.dump(variable, f, indent=2)
     f.close()
 
-# load JSON file at root/subfolder level
 
+def load_json(
+        path,
+        *,
+        encoding: str = "utf-8"
+):
+    """Load JSON file from given path."""
 
-def load_json_sub1(direc, corpus_name, fn_ending):
-    fn_complete = corpus_name + fn_ending + ".json"
-
-    with codecs.open(os.path.join(direc, corpus_name, fn_complete), "r", "utf-8-sig") as f:
+    with codecs.open(path, "r", encoding) as f:
         f_loaded = json.load(f)
     f.close()
 
-    print("finished loading", fn_complete)
+    print(f"Finished loading {path}.")
 
     return f_loaded
 
-# load JSON file at root/subfolder level and reconvert strings into objects
 
+def load_json_str_to_obj(
+        path,
+        *,
+        encoding: str = "utf-8"
+):
+    """Load JSON file from given path."""
 
-def load_json_sub1_str_to_obj(direc, corpus_name, fn_ending):
-    fn_complete = corpus_name + fn_ending + ".json"
-
-    with codecs.open(os.path.join(direc, corpus_name, fn_complete), "r", "utf-8-sig") as f:
+    with codecs.open(path, "r", encoding) as f:
         f_loaded = json.load(f)
     f.close()
-
-    print("finished loading", fn_complete)
 
     f_loaded_new = {}
 
     for string in f_loaded:
         f_loaded_new[literal_eval(string)] = f_loaded[string]
 
-    return f_loaded_new
+    print(f"Finished loading {path}.")
 
-# check if information in meta file corresponds to current query
+    return f_loaded_new
 
 
 def check_meta(corpus_name, desired_pos, lem_or_tok, maintain_subcorpora, div_n_docs_by):
+    """Check if information in meta file corresponds to current query."""
 
     if os.path.exists(os.path.join("prep", corpus_name, "meta.json")):
+        d_meta_corpus = load_json(os.path.join("prep", corpus_name, "meta.json"))
 
-        with codecs.open(os.path.join("prep", corpus_name, "meta.json"), "r", "utf-8-sig") as f_meta:
-            d_meta_corpus = json.load(f_meta)
-        f_meta.close()
-
-        if tuple(d_meta_corpus["desired_pos"]) == desired_pos\
-                and d_meta_corpus["lemma_or_token"] == lem_or_tok\
-                and d_meta_corpus["maintain_subcorpora"] == maintain_subcorpora\
+        if tuple(d_meta_corpus["desired_pos"]) == desired_pos \
+                and d_meta_corpus["lemma_or_token"] == lem_or_tok \
+                and d_meta_corpus["maintain_subcorpora"] == maintain_subcorpora \
                 and d_meta_corpus["divide_number_docs_by"] == div_n_docs_by:
             return True
-
         else:
             return False
 
     else:
         return False
 
-# define additional variables based on the criteria entered in the keynCalc.py script
-
 
 def define_additional_variables(corpus_input):
+    """Define additional variables based on the criteria enterded in the `keynCalc.py` script."""
 
     if type(corpus_input) == str:
         corpus_name = os.path.basename(corpus_input)
-
     elif type(corpus_input) == tuple and len(corpus_input) == 2:
         corpus_name = corpus_input[0]
-
     else:
         raise ValueError("Input in invalid format.")
 
     return corpus_name
 
-# construct frequency dictionary (per item)
 
-
-def d_freq(corpus_name, corpus_input, mapping_custom_to_ud, mapping_ud_to_custom, desired_pos, lem_or_tok,
-           maintain_subcorpora, div_n_docs_by):
+def d_freq(
+        corpus_name, corpus_input, mapping_custom_to_ud, mapping_ud_to_custom, desired_pos, lem_or_tok,
+        maintain_subcorpora, div_n_docs_by
+):
+    """Construct frequency dictionary (per item)."""
 
     # check input type
-
     if type(corpus_input) == str:
         input_type = "3-column_delimited"
     elif type(corpus_input) == tuple and len(corpus_input) == 2:
@@ -136,7 +125,7 @@ def d_freq(corpus_name, corpus_input, mapping_custom_to_ud, mapping_ud_to_custom
         l_docs_all = []
 
         for subcorpus in os.listdir(os.path.join(corpus_input)):
-            print("number of files in", subcorpus, ":", len(os.listdir(os.path.join(corpus_input, subcorpus))))
+            print(f"Number of files in {subcorpus}: {len(os.listdir(os.path.join(corpus_input, subcorpus)))}.")
             l_tuples_subcorpus = []
             id_doc = 0
             counter = 0
@@ -166,21 +155,21 @@ def d_freq(corpus_name, corpus_input, mapping_custom_to_ud, mapping_ud_to_custom
                             if pos in l_pos:
 
                                 if maintain_subcorpora:
-                                    l_tuples_subcorpus.append(tuple((lem, mapping_custom_to_ud[pos])))
+                                    l_tuples_subcorpus.append((lem, mapping_custom_to_ud[pos]))
                                 else:
-                                    l_tuples_subcorpus.append(tuple((lem, mapping_custom_to_ud[pos], docname)))
+                                    l_tuples_subcorpus.append((lem, mapping_custom_to_ud[pos], docname))
 
                         elif lem_or_tok == "token":
 
                             if pos in l_pos:
 
                                 if maintain_subcorpora:
-                                    l_tuples_subcorpus.append(tuple((tok, mapping_custom_to_ud[pos])))
+                                    l_tuples_subcorpus.append((tok, mapping_custom_to_ud[pos]))
                                 else:
-                                    l_tuples_subcorpus.append(tuple((tok, mapping_custom_to_ud[pos], docname)))
+                                    l_tuples_subcorpus.append((tok, mapping_custom_to_ud[pos], docname))
 
                         else:
-                            raise ValueError("lemma_or_token is not correctly defined.")
+                            raise ValueError("`lemma_or_token` is not correctly defined.")
 
                 f_delimited.close()
 
@@ -194,7 +183,7 @@ def d_freq(corpus_name, corpus_input, mapping_custom_to_ud, mapping_ud_to_custom
         l_docs_all = []
 
         for subcorpus in corpus_input[1]:
-            print("number of files in", subcorpus, ":", len(corpus_input[1][subcorpus]))
+            print(f"Number of files in {subcorpus}: {len(corpus_input[1][subcorpus])}.")
             l_tuples_subcorpus = []
             id_doc = 0
             counter = 0
@@ -214,21 +203,21 @@ def d_freq(corpus_name, corpus_input, mapping_custom_to_ud, mapping_ud_to_custom
                         if pos in l_pos:
 
                             if maintain_subcorpora:
-                                l_tuples_subcorpus.append(tuple((lem, mapping_custom_to_ud[pos])))
+                                l_tuples_subcorpus.append((lem, mapping_custom_to_ud[pos]))
                             else:
-                                l_tuples_subcorpus.append(tuple((lem, mapping_custom_to_ud[pos], docname)))
+                                l_tuples_subcorpus.append((lem, mapping_custom_to_ud[pos], docname))
 
                     elif lem_or_tok == "token":
 
                         if pos in l_pos:
 
                             if maintain_subcorpora:
-                                l_tuples_subcorpus.append(tuple((tok, mapping_custom_to_ud[pos])))
+                                l_tuples_subcorpus.append((tok, mapping_custom_to_ud[pos]))
                             else:
-                                l_tuples_subcorpus.append(tuple((tok, mapping_custom_to_ud[pos], docname)))
+                                l_tuples_subcorpus.append((tok, mapping_custom_to_ud[pos], docname))
 
                     else:
-                        raise ValueError("lemma_or_token is not correctly defined.")
+                        raise ValueError("`lemma_or_token` is not correctly defined.")
 
                 counter += 1
                 multiple_250(counter)
@@ -236,7 +225,7 @@ def d_freq(corpus_name, corpus_input, mapping_custom_to_ud, mapping_ud_to_custom
             d_tuples_corpus[subcorpus] = l_tuples_subcorpus
 
     else:
-        raise ValueError("input_type is not correctly defined.")
+        raise ValueError("`input_type` is not correctly defined.")
 
     d_freq_corpus = {"subcorpora": {}}
     d_freq_corpus_json = {"subcorpora": {}}
@@ -246,7 +235,7 @@ def d_freq(corpus_name, corpus_input, mapping_custom_to_ud, mapping_ud_to_custom
         d_freq_subcorpus = {}
 
         for tup in d_tuples_corpus[subcorpus]:
-            tup_d_freq = tuple((tup[0], tup[1]))
+            tup_d_freq = (tup[0], tup[1])
 
             if tup_d_freq not in d_freq_subcorpus:
                 d_freq_subcorpus[tup_d_freq] = 1
@@ -274,11 +263,10 @@ def d_freq(corpus_name, corpus_input, mapping_custom_to_ud, mapping_ud_to_custom
     d_freq_corpus["corpus"] = d_freq_all
     d_freq_corpus_json["corpus"] = d_freq_all_json
 
-    fn_d_freq = corpus_name + "_d_freq"
-    dump_json_sub1("prep", corpus_name, fn_d_freq, d_freq_corpus_json)
+    fn_d_freq = corpus_name + "_d_freq.json"
+    dump_json(os.path.join("prep", corpus_name), fn_d_freq, d_freq_corpus_json)
 
     # d_freq corpus parts
-
     l_docs = list(dict.fromkeys(l_docs_all))
     d_freq_corpus_parts = {}
     d_cps = {}
@@ -290,7 +278,7 @@ def d_freq(corpus_name, corpus_input, mapping_custom_to_ud, mapping_ud_to_custom
             for tup in d_freq_corpus["subcorpora"][subcorpus]:
                 item = tup[0]
                 pos = tup[1]
-                new_tup = tuple((item, pos, subcorpus))
+                new_tup = (item, pos, subcorpus)
                 d_freq_corpus_parts[new_tup] = d_freq_corpus["subcorpora"][subcorpus][tup]
 
     else:
@@ -304,8 +292,9 @@ def d_freq(corpus_name, corpus_input, mapping_custom_to_ud, mapping_ud_to_custom
             quot, remain = divmod(n_docs, n_cps)
             size_large = quot + 1
             l_docs_div = (
-                        [l_docs_shuffled[part:part + size_large] for part in range(0, remain * size_large, size_large)]
-                        + [l_docs_shuffled[part:part + quot] for part in range(remain * size_large, n_docs, quot)])
+                    [l_docs_shuffled[part:part + size_large] for part in range(0, remain * size_large, size_large)]
+                    + [l_docs_shuffled[part:part + quot] for part in range(remain * size_large, n_docs, quot)]
+            )
 
             id_cp = 1
 
@@ -336,7 +325,7 @@ def d_freq(corpus_name, corpus_input, mapping_custom_to_ud, mapping_ud_to_custom
                 pos = tup[1]
                 docname = tup[2]
                 cp = d_cp_map[docname]
-                new_tup = tuple((item, pos, cp))
+                new_tup = (item, pos, cp)
 
                 if new_tup not in d_freq_corpus_parts:
                     d_freq_corpus_parts[new_tup] = 1
@@ -348,18 +337,16 @@ def d_freq(corpus_name, corpus_input, mapping_custom_to_ud, mapping_ud_to_custom
     for tup in d_freq_corpus_parts:
         d_freq_corpus_parts_json[str(tup)] = d_freq_corpus_parts[tup]
 
-    fn_d_freq_cps = corpus_name + "_d_freq_corpus_parts"
-    dump_json_sub1("prep", corpus_name, fn_d_freq_cps, d_freq_corpus_parts_json)
+    fn_d_freq_cps = corpus_name + "_d_freq_corpus_parts.json"
+    dump_json(os.path.join("prep", corpus_name), fn_d_freq_cps, d_freq_corpus_parts_json)
 
     return d_freq_corpus, d_freq_corpus_parts, d_cps
 
-# construct frequency dictionary (totals)
-
 
 def sum_words_desired_pos(corpus_name, d_freq_corpus, desired_pos, d_freq_cps, d_cps, maintain_subcorpora):
+    """Construct frequency dictionary (totals)."""
 
     # sum corpus
-
     d_sum_corpus = {"corpus": {"all": {"total": 0, "unique": 0}}, "subcorpora": {}}
 
     for subcorpus in d_freq_corpus["subcorpora"]:
@@ -387,11 +374,10 @@ def sum_words_desired_pos(corpus_name, d_freq_corpus, desired_pos, d_freq_cps, d
             d_sum_corpus["subcorpora"][subcorpus][pos]["total"] += d_freq_corpus["subcorpora"][subcorpus][tup]
             d_sum_corpus["subcorpora"][subcorpus][pos]["unique"] += 1
 
-    fn_d_sum_corpus = corpus_name + "_sum_words_desired_pos"
-    dump_json_sub1("prep", corpus_name, fn_d_sum_corpus, d_sum_corpus)
+    fn_d_sum_corpus = corpus_name + "_sum_words_desired_pos.json"
+    dump_json(os.path.join("prep", corpus_name), fn_d_sum_corpus, d_sum_corpus)
 
     # sum corpus parts
-
     d_sum_cps = {}
 
     if maintain_subcorpora:
@@ -401,7 +387,7 @@ def sum_words_desired_pos(corpus_name, d_freq_corpus, desired_pos, d_freq_cps, d
 
         for subcorpus in d_sum_corpus["subcorpora"]:
             d_sum_cps[subcorpus]["total_all"] = d_sum_corpus["subcorpora"][subcorpus]["all"]["total"]
-            d_sum_cps[subcorpus]["normalised_total_all"] =\
+            d_sum_cps[subcorpus]["normalised_total_all"] = \
                 d_sum_corpus["subcorpora"][subcorpus]["all"]["total"] / d_sum_corpus["corpus"]["all"]["total"]
 
             for pos in desired_pos:
@@ -423,18 +409,17 @@ def sum_words_desired_pos(corpus_name, d_freq_corpus, desired_pos, d_freq_cps, d
             d_sum_cps[part][pos] += d_freq_cps[tup]
 
         for part in d_cps:
-            d_sum_cps[part]["normalised_total_all"] =\
+            d_sum_cps[part]["normalised_total_all"] = \
                 d_sum_cps[part]["total_all"] / d_sum_corpus["corpus"]["all"]["total"]
 
-    fn_d_sum_cps = corpus_name + "_sum_words_desired_pos_corpus_parts"
-    dump_json_sub1("prep", corpus_name, fn_d_sum_cps, d_sum_cps)
+    fn_d_sum_cps = corpus_name + "_sum_words_desired_pos_corpus_parts.json"
+    dump_json(os.path.join("prep", corpus_name), fn_d_sum_cps, d_sum_cps)
 
     return d_sum_cps
 
-# calculate dispersion values (DPnorm)
-
 
 def dp(corpus_name, d_freq_corpus, d_freq_cps, d_sum_cps):
+    """Calculate dispersion values (DPnorm)."""
 
     if len(d_sum_cps) == 1:
         d_dp_norm = {}
@@ -452,7 +437,7 @@ def dp(corpus_name, d_freq_corpus, d_freq_cps, d_sum_cps):
 
             for tup in d_freq_corpus["corpus"]:
                 expected = d_sum_cps[part]["normalised_total_all"]
-                entry = tuple((tup[0], tup[1], part))
+                entry = (tup[0], tup[1], part)
 
                 if entry in d_freq_cps:
                     freq_part = d_freq_cps[entry]
@@ -478,15 +463,14 @@ def dp(corpus_name, d_freq_corpus, d_freq_cps, d_sum_cps):
     for tup in d_dp_norm:
         d_dp_norm_json[str(tup)] = d_dp_norm[tup]
 
-    fn_d_dp = corpus_name + "_DP"
-    dump_json_sub1("prep", corpus_name, fn_d_dp, d_dp_norm_json)
+    fn_d_dp = corpus_name + "_DP.json"
+    dump_json(os.path.join("prep", corpus_name), fn_d_dp, d_dp_norm_json)
 
     return d_dp_norm
 
-# add adjusted frequencies to frequency dictionary (per item)
-
 
 def d_freq_abs_adj(corpus_name, d_freq_corpus, d_dp):
+    """Add adjusted frequencies to frequency dictionary (per item)."""
     d_abs_adj = {}
 
     for tup in d_freq_corpus["corpus"]:
@@ -509,15 +493,14 @@ def d_freq_abs_adj(corpus_name, d_freq_corpus, d_dp):
     for tup in d_abs_adj:
         d_abs_adj_json[str(tup)] = d_abs_adj[tup]
 
-    fn_d_abs_adj = corpus_name + "_d_freq_abs_adj"
-    dump_json_sub1("prep", corpus_name, fn_d_abs_adj, d_abs_adj_json)
+    fn_d_abs_adj = corpus_name + "_d_freq_abs_adj.json"
+    dump_json(os.path.join("prep", corpus_name), fn_d_abs_adj, d_abs_adj_json)
 
     return d_abs_adj
 
-# add adjusted frequencies to frequency dictionary (totals)
-
 
 def sum_words_desired_pos_abs_adj(corpus_name, d_abs_adj, desired_pos):
+    """Add adjusted frequencies to frequency dictionary (per item)."""
     d_sum_abs_adj = {"all": {"abs_freq": 0, "adj_freq": 0, "abs_freq_Lapl": 0, "adj_freq_Lapl": 0, "unique": 0}}
 
     for pos in desired_pos:
@@ -537,17 +520,17 @@ def sum_words_desired_pos_abs_adj(corpus_name, d_abs_adj, desired_pos):
         d_sum_abs_adj[pos]["adj_freq_Lapl"] += d_abs_adj[tup]["adj_freq_Lapl"]
         d_sum_abs_adj[pos]["unique"] += 1
 
-    fn_d_sum_abs_adj = corpus_name + "_sum_words_desired_pos_abs_adj"
-    dump_json_sub1("prep", corpus_name, fn_d_sum_abs_adj, d_sum_abs_adj)
+    fn_d_sum_abs_adj = corpus_name + "_sum_words_desired_pos_abs_adj.json"
+    dump_json(os.path.join("prep", corpus_name), fn_d_sum_abs_adj, d_sum_abs_adj)
 
     return d_sum_abs_adj
 
-# calculate keyness
 
-
-def keyness_calculation(corpus_name_sc, corpus_name_rc, lem_or_tok, approx, stat_sign_thresh, degrs_of_freed,
-                        keyn_thresh, freq_type, keyn_metric, n_ckis_want_analyse, sel_items, d_abs_adj_sc, d_abs_adj_rc,
-                        d_sum_abs_adj_sc, d_sum_abs_adj_rc):
+def keyness_calculation(
+        corpus_name_sc, corpus_name_rc, lem_or_tok, approx, stat_sign_thresh, degrs_of_freed, keyn_thresh, freq_type,
+        keyn_metric, n_ckis_want_analyse, sel_items, d_abs_adj_sc, d_abs_adj_rc, d_sum_abs_adj_sc, d_sum_abs_adj_rc
+):
+    """Calculate keyness."""
     output_direc = corpus_name_sc + "_VS_" + corpus_name_rc
     fn_keyn = corpus_name_sc + "_keyness_" + keyn_metric + "_" + freq_type
     l_d_keyn = []
@@ -563,7 +546,6 @@ def keyness_calculation(corpus_name_sc, corpus_name_rc, lem_or_tok, approx, stat
 
         if tup in d_abs_adj_rc:
             freq_rc = d_abs_adj_rc[tup][freq_type]
-
         else:
 
             if freq_type in ["abs_freq", "adj_freq"]:
@@ -571,7 +553,7 @@ def keyness_calculation(corpus_name_sc, corpus_name_rc, lem_or_tok, approx, stat
             elif freq_type in ["abs_freq_Lapl", "adj_freq_Lapl"]:
                 freq_rc = 1
             else:
-                raise ValueError("frequency_type is not correctly defined.")
+                raise ValueError("`frequency_type` is not correctly defined.")
 
         exp_freq_sc = sum_sc * (freq_sc + freq_rc) / (sum_sc + sum_rc)
         exp_freq_rc = sum_rc * (freq_sc + freq_rc) / (sum_sc + sum_rc)
@@ -582,25 +564,20 @@ def keyness_calculation(corpus_name_sc, corpus_name_rc, lem_or_tok, approx, stat
         if keyn_metric == "DIFF":
             keyn_score_sc = ((norm_freq_1000_sc - norm_freq_1000_rc) * 100) / norm_freq_1000_rc
             keyn_score_rc = ((norm_freq_1000_rc - norm_freq_1000_sc) * 100) / norm_freq_1000_sc
-
         elif keyn_metric == "Ratio":
             keyn_score_sc = norm_freq_1000_sc / norm_freq_1000_rc
             keyn_score_rc = norm_freq_1000_rc / norm_freq_1000_sc
-
         elif keyn_metric == "OddsRatio":
             keyn_score_sc = (freq_sc / (sum_sc - freq_sc)) / (freq_rc / (sum_rc - freq_rc))
             keyn_score_rc = (freq_rc / (sum_rc - freq_rc)) / (freq_sc / (sum_sc - freq_sc))
-
         elif keyn_metric == "LogRatio":
             keyn_score_sc = np.log2(norm_freq_1000_sc / norm_freq_1000_rc)
             keyn_score_rc = np.log2(norm_freq_1000_rc / norm_freq_1000_sc)
-
         elif keyn_metric == "DiffCoefficient":
             keyn_score_sc = (norm_freq_1000_sc - norm_freq_1000_rc) / (norm_freq_1000_sc + norm_freq_1000_rc)
             keyn_score_rc = (norm_freq_1000_rc - norm_freq_1000_sc) / (norm_freq_1000_rc + norm_freq_1000_sc)
-
         else:
-            raise ValueError("keyness_metric is not correctly defined.")
+            raise ValueError("`keyness_metric` is not correctly defined.")
 
         if freq_sc == 0 or exp_freq_sc == 0:
 
@@ -618,20 +595,22 @@ def keyness_calculation(corpus_name_sc, corpus_name_rc, lem_or_tok, approx, stat
 
         bic = log_lik - (degrs_of_freed * np.log(sum_sc + sum_rc))
 
-        d_keyn = {"item": tup,
-                  "keyness": keyn_score_sc,
-                  "BIC": bic,
-                  "DP_SC": d_abs_adj_sc[tup]["DP"],
-                  "abs_freq_SC": d_abs_adj_sc[tup]["abs_freq"],
-                  "norm_abs_freq_1000_SC": d_abs_adj_sc[tup]["abs_freq"] / d_sum_abs_adj_sc["all"]["abs_freq"] * 1000,
-                  "adj_freq_SC": d_abs_adj_sc[tup]["adj_freq"],
-                  "norm_adj_freq_1000_SC": d_abs_adj_sc[tup]["adj_freq"] / d_sum_abs_adj_sc["all"]["adj_freq"] * 1000,
-                  "abs_freq_Lapl_SC": d_abs_adj_sc[tup]["abs_freq_Lapl"],
-                  "norm_abs_freq_Lapl_1000_SC":
-                      d_abs_adj_sc[tup]["abs_freq_Lapl"] / d_sum_abs_adj_sc["all"]["abs_freq_Lapl"] * 1000,
-                  "adj_freq_Lapl_SC": d_abs_adj_sc[tup]["adj_freq_Lapl"],
-                  "norm_adj_freq_Lapl_1000_SC":
-                      d_abs_adj_sc[tup]["adj_freq_Lapl"] / d_sum_abs_adj_sc["all"]["adj_freq_Lapl"] * 1000}
+        d_keyn = {
+            "item": tup,
+            "keyness": keyn_score_sc,
+            "BIC": bic,
+            "DP_SC": d_abs_adj_sc[tup]["DP"],
+            "abs_freq_SC": d_abs_adj_sc[tup]["abs_freq"],
+            "norm_abs_freq_1000_SC": d_abs_adj_sc[tup]["abs_freq"] / d_sum_abs_adj_sc["all"]["abs_freq"] * 1000,
+            "adj_freq_SC": d_abs_adj_sc[tup]["adj_freq"],
+            "norm_adj_freq_1000_SC": d_abs_adj_sc[tup]["adj_freq"] / d_sum_abs_adj_sc["all"]["adj_freq"] * 1000,
+            "abs_freq_Lapl_SC": d_abs_adj_sc[tup]["abs_freq_Lapl"],
+            "norm_abs_freq_Lapl_1000_SC":
+                d_abs_adj_sc[tup]["abs_freq_Lapl"] / d_sum_abs_adj_sc["all"]["abs_freq_Lapl"] * 1000,
+            "adj_freq_Lapl_SC": d_abs_adj_sc[tup]["adj_freq_Lapl"],
+            "norm_adj_freq_Lapl_1000_SC":
+                d_abs_adj_sc[tup]["adj_freq_Lapl"] / d_sum_abs_adj_sc["all"]["adj_freq_Lapl"] * 1000
+        }
 
         if tup in d_abs_adj_rc:
             d_keyn["DP_RC"] = d_abs_adj_rc[tup]["DP"]
@@ -647,7 +626,6 @@ def keyness_calculation(corpus_name_sc, corpus_name_rc, lem_or_tok, approx, stat
             d_keyn["adj_freq_Lapl_RC"] = d_abs_adj_rc[tup]["adj_freq_Lapl"]
             d_keyn["norm_adj_freq_Lapl_1000_RC"] = \
                 d_abs_adj_rc[tup]["adj_freq_Lapl"] / d_sum_abs_adj_rc["all"]["adj_freq_Lapl"] * 1000
-
         else:
             d_keyn["DP_RC"] = "NA"
             d_keyn["abs_freq_RC"] = approx
@@ -694,31 +672,31 @@ def keyness_calculation(corpus_name_sc, corpus_name_rc, lem_or_tok, approx, stat
             d_keyn_sel_items["BIC"] = bic
             d_keyn_sel_items["DP_SC"] = d_abs_adj_sc[tup]["DP"]
             d_keyn_sel_items["abs_freq_SC"] = d_abs_adj_sc[tup]["abs_freq"]
-            d_keyn_sel_items["norm_abs_freq_1000_SC"] =\
+            d_keyn_sel_items["norm_abs_freq_1000_SC"] = \
                 d_abs_adj_sc[tup]["abs_freq"] / d_sum_abs_adj_sc["all"]["abs_freq"] * 1000
             d_keyn_sel_items["adj_freq_SC"] = d_abs_adj_sc[tup]["adj_freq"]
-            d_keyn_sel_items["norm_adj_freq_1000_SC"] =\
+            d_keyn_sel_items["norm_adj_freq_1000_SC"] = \
                 d_abs_adj_sc[tup]["adj_freq"] / d_sum_abs_adj_sc["all"]["adj_freq"] * 1000
             d_keyn_sel_items["abs_freq_Lapl_SC"] = d_abs_adj_sc[tup]["abs_freq_Lapl"]
-            d_keyn_sel_items["norm_abs_freq_Lapl_1000_SC"] =\
+            d_keyn_sel_items["norm_abs_freq_Lapl_1000_SC"] = \
                 d_abs_adj_sc[tup]["abs_freq_Lapl"] / d_sum_abs_adj_sc["all"]["abs_freq_Lapl"] * 1000
             d_keyn_sel_items["adj_freq_Lapl_SC"] = d_abs_adj_sc[tup]["adj_freq_Lapl"]
-            d_keyn_sel_items["norm_adj_freq_Lapl_1000_SC"] =\
+            d_keyn_sel_items["norm_adj_freq_Lapl_1000_SC"] = \
                 d_abs_adj_sc[tup]["adj_freq_Lapl"] / d_sum_abs_adj_sc["all"]["adj_freq_Lapl"] * 1000
 
             if tup in d_abs_adj_rc:
                 d_keyn_sel_items["DP_RC"] = d_abs_adj_rc[tup]["DP"]
                 d_keyn_sel_items["abs_freq_RC"] = d_abs_adj_rc[tup]["abs_freq"]
-                d_keyn_sel_items["norm_abs_freq_1000_RC"] =\
+                d_keyn_sel_items["norm_abs_freq_1000_RC"] = \
                     d_abs_adj_rc[tup]["abs_freq"] / d_sum_abs_adj_rc["all"]["abs_freq"] * 1000
                 d_keyn_sel_items["adj_freq_RC"] = d_abs_adj_rc[tup]["adj_freq"]
-                d_keyn_sel_items["norm_adj_freq_1000_RC"] =\
+                d_keyn_sel_items["norm_adj_freq_1000_RC"] = \
                     d_abs_adj_rc[tup]["adj_freq"] / d_sum_abs_adj_rc["all"]["adj_freq"] * 1000
                 d_keyn_sel_items["abs_freq_Lapl_RC"] = d_abs_adj_rc[tup]["abs_freq_Lapl"]
-                d_keyn_sel_items["norm_abs_freq_Lapl_1000_RC"] =\
+                d_keyn_sel_items["norm_abs_freq_Lapl_1000_RC"] = \
                     d_abs_adj_rc[tup]["abs_freq_Lapl"] / d_sum_abs_adj_rc["all"]["abs_freq_Lapl"] * 1000
                 d_keyn_sel_items["adj_freq_Lapl_RC"] = d_abs_adj_rc[tup]["adj_freq_Lapl"]
-                d_keyn_sel_items["norm_adj_freq_Lapl_1000_RC"] =\
+                d_keyn_sel_items["norm_adj_freq_Lapl_1000_RC"] = \
                     d_abs_adj_rc[tup]["adj_freq_Lapl"] / d_sum_abs_adj_rc["all"]["adj_freq_Lapl"] * 1000
 
             else:
@@ -734,11 +712,10 @@ def keyness_calculation(corpus_name_sc, corpus_name_rc, lem_or_tok, approx, stat
 
             l_d_keyn_sel_items.append(d_keyn_sel_items)
 
-    dump_json_sub1("output", output_direc, fn_keyn + "_all", l_d_keyn)
-    dump_json_sub1("output", output_direc, fn_keyn + "_selection", l_d_keyn_sel_items)
+    dump_json(os.path.join("output", output_direc), fn_keyn + "_all.json", l_d_keyn)
+    dump_json(os.path.join("output", output_direc), fn_keyn + "_selection.json", l_d_keyn_sel_items)
 
     # clustering
-
     if len(l_d_keyn_top_n) >= n_ckis_want_analyse:
         array_freq_differences = np.array(l_freq_diff)
         n_ckis = len(l_d_keyn_top_n)
@@ -746,8 +723,7 @@ def keyness_calculation(corpus_name_sc, corpus_name_rc, lem_or_tok, approx, stat
         cluster = AgglomerativeClustering(n_clusters=n_clusters, affinity='euclidean', linkage='average')
         l_cluster_labels = list(cluster.fit_predict(array_freq_differences))
 
-        #   - add cluster to l_d_keyn_top-N
-
+        # add cluster to l_d_keyn_top-N
         for dic, label in zip(l_d_keyn_top_n, l_cluster_labels):
             dic["cluster"] = int(label)
 
@@ -761,6 +737,7 @@ def keyness_calculation(corpus_name_sc, corpus_name_rc, lem_or_tok, approx, stat
             counter_item = 0
 
             for dic in l_d_keyn_top_n:
+
                 if dic["cluster"] == label:
                     counter_item += 1
                     sum_keyn_cluster += dic["keyn_SC"]
@@ -787,9 +764,13 @@ def keyness_calculation(corpus_name_sc, corpus_name_rc, lem_or_tok, approx, stat
             counter_n_clusters_2 += 1
             cluster_rank += 1
 
-        sorted_l_d_keyn_top_n = sorted(sorted(
-            sorted(sorted(l_d_keyn_top_n, key=lambda i: i["item"]), key=lambda i: i["freq_SC"], reverse=True),
-            key=lambda i: i["keyn_SC"], reverse=True), key=lambda i: i["cluster_rank"])  # sort key items by 1) cluster_rank (ascending); 2) keyness (descending); 3) freq_SC (descending); 4) pos_lem_or_tok (ascending)
+        sorted_l_d_keyn_top_n = sorted(sorted(sorted(sorted(
+            l_d_keyn_top_n,
+            key=lambda i: i["item"]),
+            key=lambda i: i["freq_SC"], reverse=True),
+            key=lambda i: i["keyn_SC"], reverse=True),
+            key=lambda i: i["cluster_rank"]
+        )  # sort key items by 1) cluster_rank (ascending); 2) keyness (descending); 3) freq_SC (descending); 4) pos_lem_or_tok (ascending)
 
         last_cluster = sorted_l_d_keyn_top_n[n_ckis_want_analyse]["cluster_rank"]
 
@@ -806,25 +787,31 @@ def keyness_calculation(corpus_name_sc, corpus_name_rc, lem_or_tok, approx, stat
             dic["cluster"] = 0
             dic["cluster_rank"] = 0
 
-        sorted_l_d_keyn_top_n = sorted(sorted(
-            sorted(l_d_keyn_top_n, key=lambda i: i["item"]), key=lambda i: i["freq_SC"], reverse=True),
-            key=lambda i: i["keyn_SC"], reverse=True)  # sort key items by 1) keyness (descending); 2) freq_SC (descending); 3) pos_lem_or_tok (ascending)
+        sorted_l_d_keyn_top_n = sorted(sorted(sorted(
+            l_d_keyn_top_n,
+            key=lambda i: i["item"]),
+            key=lambda i: i["freq_SC"], reverse=True),
+            key=lambda i: i["keyn_SC"], reverse=True
+        )  # sort key items by 1) keyness (descending); 2) freq_SC (descending); 3) pos_lem_or_tok (ascending)
 
         l_d_keyn_top_n = []
 
         for dic in sorted_l_d_keyn_top_n:
             l_d_keyn_top_n.append(dic)
 
-    dump_json_sub1("output", output_direc, fn_keyn + "_top-N", l_d_keyn_top_n)
+    dump_json(os.path.join("output", output_direc), fn_keyn + "_top-N.json", l_d_keyn_top_n)
 
     # write final results into XLSX
 
-    headers_ws1_and_3 = [lem_or_tok, "pos", "keyness", "BIC", "DP_SC", "DP_RC", "AbF_SC", "NAbF_SC", "AbF_RC",
-                         "NAbF_RC", "AdF_SC", "NAdF_SC", "AdF_RC", "NAdF_RC", "AbFLpl_SC", "NAbFLpl_SC", "AbFLpl_RC",
-                         "NAbFLpl_RC", "AdFLpl_SC", "NAdFLpl_SC", "AdFLpl_RC", "NAdFLpl_RC"]
-    headers_ws2 = [lem_or_tok, "pos", "keyness_SC", "keyness_RC", "BIC", "LL", "DP_SC", "DP_RC", "freq_SC",
-                   "freq_RC", "exp_freq_SC", "exp_freq_RC", "norm_freq_1000_SC", "norm_freq_1000_RC", "cluster",
-                   "cluster_rank"]
+    headers_ws1_and_3 = [
+        lem_or_tok, "pos", "keyness", "BIC", "DP_SC", "DP_RC", "AbF_SC", "NAbF_SC", "AbF_RC", "NAbF_RC", "AdF_SC",
+        "NAdF_SC", "AdF_RC", "NAdF_RC", "AbFLpl_SC", "NAbFLpl_SC", "AbFLpl_RC", "NAbFLpl_RC", "AdFLpl_SC", "NAdFLpl_SC",
+        "AdFLpl_RC", "NAdFLpl_RC"
+    ]
+    headers_ws2 = [
+        lem_or_tok, "pos", "keyness_SC", "keyness_RC", "BIC", "LL", "DP_SC", "DP_RC", "freq_SC", "freq_RC",
+        "exp_freq_SC", "exp_freq_RC", "norm_freq_1000_SC", "norm_freq_1000_RC", "cluster", "cluster_rank"
+    ]
 
     wb = xlsxwriter.Workbook(os.path.join("output", output_direc, fn_keyn + ".xlsx"))
     ws1 = wb.add_worksheet("all")
@@ -939,22 +926,24 @@ def keyness_calculation(corpus_name_sc, corpus_name_rc, lem_or_tok, approx, stat
 
     return l_d_keyn, l_d_keyn_top_n, l_d_keyn_sel_items
 
-# construct meta file
-
 
 def d_meta(corpus_name, desired_pos, lem_or_tok, maintain_subcorpora, div_n_docs_by):
-    d_meta_corpus = {"desired_pos": desired_pos,
-                     "lemma_or_token": lem_or_tok,
-                     "maintain_subcorpora": maintain_subcorpora,
-                     "divide_number_docs_by": div_n_docs_by}
+    """Construct meta file."""
+    d_meta_corpus = {
+        "desired_pos": desired_pos,
+        "lemma_or_token": lem_or_tok,
+        "maintain_subcorpora": maintain_subcorpora,
+        "divide_number_docs_by": div_n_docs_by
+    }
 
-    dump_json_sub1("prep", corpus_name, "meta", d_meta_corpus)
-
-# STEP_1: convert corpora into frequency dictionaries (data stored per corpus in "prep" folder)
+    dump_json(os.path.join("prep", corpus_name), "meta.json", d_meta_corpus)
 
 
-def corpora_to_d_freq(corpus_name, input_corpus, mapping_custom_to_ud, mapping_ud_to_custom, desired_pos, lem_or_tok,
-                      maintain_subcorpora, div_n_docs_by):
+def corpora_to_d_freq(
+        corpus_name, input_corpus, mapping_custom_to_ud, mapping_ud_to_custom, desired_pos, lem_or_tok,
+        maintain_subcorpora, div_n_docs_by
+):
+    """STEP_1: convert corpora into frequency dictionaries (data stored per corpus in "prep" folder)."""
     d_freq_corpus, d_freq_cps, d_cps = d_freq(
         corpus_name, input_corpus, mapping_custom_to_ud, mapping_ud_to_custom, desired_pos, lem_or_tok,
         maintain_subcorpora, div_n_docs_by)
@@ -963,31 +952,29 @@ def corpora_to_d_freq(corpus_name, input_corpus, mapping_custom_to_ud, mapping_u
 
     return d_freq_corpus, d_freq_cps, d_sum_cps
 
-# STEP_2: apply dispersion metric (DPnorm; Gries, 2008; Lijffijt & Gries, 2012), calculate adjusted frequencies and
-# update frequency dictionaries (data stored per corpus in "prep" folder)
-
 
 def dispersion(corpus_name, d_freq_corpus, d_freq_cps, d_sum_cps, desired_pos):
+    """STEP_2: apply dispersion metric (DPnorm; Gries, 2008; Lijffijt & Gries, 2012), calculate adjusted frequencies and
+    update frequency dictionaries (data stored per corpus in "prep" folder)."""
     d_dp = dp(corpus_name, d_freq_corpus, d_freq_cps, d_sum_cps)
     d_freq_abs_adj_corpus = d_freq_abs_adj(corpus_name, d_freq_corpus, d_dp)
     d_sum_abs_adj = sum_words_desired_pos_abs_adj(corpus_name, d_freq_abs_adj_corpus, desired_pos)
 
     return d_freq_abs_adj_corpus, d_sum_abs_adj
 
-# STEP_3: calculate keyness (data stored in "[SC]_VS_[RC]" folder)
 
-
-def keyness(name_sc, name_rc, lem_or_tok, approx, stat_sign_thresh, degrs_of_freed, keyn_thresh, freq_type,
-            keyn_metric, n_ckis_want_analyse, sel_items, d_freq_abs_adj_sc, d_sum_abs_adj_sc, d_freq_abs_adj_rc,
-            d_sum_abs_adj_rc):
+def keyness(
+        name_sc, name_rc, lem_or_tok, approx, stat_sign_thresh, degrs_of_freed, keyn_thresh, freq_type, keyn_metric,
+        n_ckis_want_analyse, sel_items, d_freq_abs_adj_sc, d_sum_abs_adj_sc, d_freq_abs_adj_rc, d_sum_abs_adj_rc
+):
+    """STEP_3: calculate keyness (data stored in "[SC]_VS_[RC]" folder)."""
     l_d_keyn, l_d_keyn_top_n, l_d_keyn_sel_items = keyness_calculation(
         name_sc, name_rc, lem_or_tok, approx, stat_sign_thresh, degrs_of_freed, keyn_thresh, freq_type, keyn_metric,
         n_ckis_want_analyse, sel_items, d_freq_abs_adj_sc, d_freq_abs_adj_rc, d_sum_abs_adj_sc, d_sum_abs_adj_rc)
 
     return l_d_keyn, l_d_keyn_top_n, l_d_keyn_sel_items
 
-# STEP_4: store information of last query in meta file (data stored per corpus in "prep" folder)
-
 
 def meta(corpus_name, desired_pos, lem_or_tok, maintain_subcorpora, div_n_docs_by):
+    """STEP_4: store information of last query in meta file (data stored per corpus in "prep" folder)."""
     d_meta(corpus_name, desired_pos, lem_or_tok, maintain_subcorpora, div_n_docs_by)

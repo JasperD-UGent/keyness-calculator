@@ -10,13 +10,11 @@ The usage example is presented in the <code>keynessCalculator_example.py</code> 
 def main():
     
     # CSV/TSV files as input
-    
     input_sc = os.path.join("exampleCorpora", "SC_singleSubc_1")
     input_rc = os.path.join("exampleCorpora", "RC_multSubc_1")
     keyness_dictionary_1 = init_keyness_calculator(input_sc, input_rc)
     
     # Python dictionary as input
-
     input_sc = ("SC_singleSubc_2", {
         "SC_subcorpus1": [[("tok1", "NOUN", "lem1"), ("tok2", "NOUN", "lem1")],
                           [("tok1", "NOUN", "lem1"), ("tok3", "VERB", "lem2")],
