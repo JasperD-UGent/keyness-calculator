@@ -946,9 +946,11 @@ def corpora_to_d_freq(
     """STEP_1: convert corpora into frequency dictionaries (data stored per corpus in "prep" folder)."""
     d_freq_corpus, d_freq_cps, d_cps = d_freq(
         corpus_name, input_corpus, mapping_custom_to_ud, mapping_ud_to_custom, desired_pos, lem_or_tok,
-        maintain_subcorpora, div_n_docs_by)
+        maintain_subcorpora, div_n_docs_by
+    )
     d_sum_cps = sum_words_desired_pos(
-        corpus_name, d_freq_corpus, desired_pos, d_freq_cps, d_cps, maintain_subcorpora)
+        corpus_name, d_freq_corpus, desired_pos, d_freq_cps, d_cps, maintain_subcorpora
+    )
 
     return d_freq_corpus, d_freq_cps, d_sum_cps
 
@@ -970,7 +972,8 @@ def keyness(
     """STEP_3: calculate keyness (data stored in "[SC]_VS_[RC]" folder)."""
     l_d_keyn, l_d_keyn_top_n, l_d_keyn_sel_items = keyness_calculation(
         name_sc, name_rc, lem_or_tok, approx, stat_sign_thresh, degrs_of_freed, keyn_thresh, freq_type, keyn_metric,
-        n_ckis_want_analyse, sel_items, d_freq_abs_adj_sc, d_freq_abs_adj_rc, d_sum_abs_adj_sc, d_sum_abs_adj_rc)
+        n_ckis_want_analyse, sel_items, d_freq_abs_adj_sc, d_freq_abs_adj_rc, d_sum_abs_adj_sc, d_sum_abs_adj_rc
+    )
 
     return l_d_keyn, l_d_keyn_top_n, l_d_keyn_sel_items
 
