@@ -1,5 +1,12 @@
 from utils import init_keyness_calculator
+import numpy as np
 import os
+import random
+
+
+seed = 42
+np.random.seed(seed)
+random.seed(seed)
 
 
 def main():
