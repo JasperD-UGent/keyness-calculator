@@ -5,10 +5,9 @@ This module allows you to analyse the keyness of items in a study corpus compare
 **NOTE**: the example corpus used for the CSV/TSV input type is included in the <code>exampleCorpora</code> folder of this GitHub repository. This dummy corpus was created based on the [UD Spanish AnCora treebank](https://universaldependencies.org/treebanks/es_ancora/index.html). The treebank sentences were randomly divided over six documents, which were, at their turn, equally divided over three subcorpora (one subcorpora for the study corpus, and two for the reference corpus). The corpus adheres to the required folder structure: <code>corpus_folder/subcorpus_folders/document_files</code>.
 ## Usage example
 ### Input
-The usage example is presented in the <code>keynessCalculator_example.py</code> file. It contains a usage example for both input types (CSV/TSV files or Python dictionary). The <code>init_keyness_calculator</code> function used to perform the keyness calculations only requires two arguments, namely the study corpus (passed to the first-position <code>input_sc</code> argument) and the reference corpus (passed to the second-position <code>input_rc</code> argument). For CSV/TSV files as input type, the argument is simply the path to the corpus folder; for the Python dictionary as input, you need to construct a 2-tuple of the corpus name followed by the Python dictionary in second position. To learn more about all the possible other arguments which can be passed to the <code>init_keyness_calculator</code> function, have a look at the [source code](https://github.com/JasperD-UGent/keyness-calculator/blob/main/utils.py).
+The usage example is presented in the <code>keynessCalculator_example.py</code> file. It contains a usage example for both input types (CSV/TSV files or Python dictionary). The <code>init_keyness_calculator</code> function used to perform the keyness calculations only requires two arguments, namely the study corpus (passed to the first-position <code>input_sc</code> argument) and the reference corpus (passed to the second-position <code>input_rc</code> argument). For CSV/TSV files as input type, the argument is simply the path to the corpus folder; for the Python dictionary as input, you need to construct a 2-tuple of the corpus name followed by the Python dictionary in second position. To learn more about all the possible other arguments which can be passed to the <code>init_keyness_calculator</code> function, have a look at the [source code](https://github.com/JasperD-UGent/keyness-calculator/blob/main/keynessCalculator_example_defs.py).
 ```python
 def main():
-    
     # CSV/TSV files as input
     input_sc = os.path.join("exampleCorpora", "SC_singleSubc_1")
     input_rc = os.path.join("exampleCorpora", "RC_multSubc_1")
@@ -36,7 +35,6 @@ def main():
                           [("tok1", "NOUN", "lem1"), ("tok2", "NOUN", "lem1")],
                           [("tok1", "NOUN", "lem1"), ("tok3", "VERB", "lem2")]]
     })
-
     keyness_dictionary_2 = init_keyness_calculator(input_sc, input_rc)
 ```
 ### Output

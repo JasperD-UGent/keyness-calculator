@@ -1,6 +1,6 @@
-from defs.utils_defs import define_additional_variables, check_meta
-from defs.utils_defs import load_json, load_json_str_to_obj
-from defs.utils_defs import corpora_to_d_freq, dispersion, keyness, meta
+from utils.keynessCalculation_support import define_additional_variables, check_meta, corpora_to_d_freq, dispersion, \
+    keyness, meta
+from utils.process_JSONs import load_json, load_json_str_to_obj
 import os
 from typing import Dict, List, Optional, Tuple, Union
 

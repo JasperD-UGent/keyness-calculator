@@ -1,4 +1,4 @@
-from utils import init_keyness_calculator
+from keynessCalculator_example_defs import init_keyness_calculator
 import numpy as np
 import os
 import random
@@ -10,7 +10,6 @@ random.seed(seed)
 
 
 def main():
-    
     # CSV/TSV files as input
     input_sc = os.path.join("exampleCorpora", "SC_singleSubc_1")
     input_rc = os.path.join("exampleCorpora", "RC_multSubc_1")
@@ -37,7 +36,6 @@ def main():
                           [("tok1", "NOUN", "lem1"), ("tok2", "NOUN", "lem1")],
                           [("tok1", "NOUN", "lem1"), ("tok3", "VERB", "lem2")]]
     })
-
     keyness_dictionary_2 = init_keyness_calculator(input_sc, input_rc)
 
 

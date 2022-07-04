@@ -1,71 +1,13 @@
-from ast import literal_eval
-import codecs
+from .counters import multiple_250
+from .process_JSONs import dump_json, load_json
 import copy
 import csv
-import json
 import numpy as np
 import operator
 import os
 import random
 from sklearn.cluster import AgglomerativeClustering
 import xlsxwriter
-
-
-def multiple_250(counter):
-    """Counter which prints every multiple of 250."""
-
-    if (counter / 250).is_integer():
-        print(counter)
-    else:
-        pass
-
-
-def dump_json(path_to_direc, fn, variable):
-    """Dump given variable to given JSON filename on given path."""
-
-    if not os.path.isdir(path_to_direc):
-        os.makedirs(path_to_direc)
-
-    with codecs.open(os.path.join(path_to_direc, fn), "w", "utf-8") as f:
-        json.dump(variable, f, indent=2)
-    f.close()
-
-
-def load_json(
-        path,
-        *,
-        encoding: str = "utf-8"
-):
-    """Load JSON file from given path."""
-
-    with codecs.open(path, "r", encoding) as f:
-        f_loaded = json.load(f)
-    f.close()
-
-    print(f"Finished loading {path}.")
-
-    return f_loaded
-
-
-def load_json_str_to_obj(
-        path,
-        *,
-        encoding: str = "utf-8"
-):
-    """Load JSON file from given path."""
-
-    with codecs.open(path, "r", encoding) as f:
-        f_loaded = json.load(f)
-    f.close()
-
-    f_loaded_new = {}
-
-    for string in f_loaded:
-        f_loaded_new[literal_eval(string)] = f_loaded[string]
-
-    print(f"Finished loading {path}.")
-
-    return f_loaded_new
 
 
 def check_meta(corpus_name, desired_pos, lem_or_tok, maintain_subcorpora, div_n_docs_by):
