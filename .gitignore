@@ -1,0 +1,16 @@
+# Git files
+
+# virtual environment
+/venv
+
+# Python cache folders
+**/__pycache__
+
+# PyCharm folders
+/.idea
+
+# output and prep files
+/output
+/output_2022_05_30
+/prep
+/prep_2022_05_30
