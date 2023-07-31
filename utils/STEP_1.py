@@ -70,7 +70,7 @@ def d_freq(
                 else:
                     raise ValueError("Delimiter is not recognised.")
 
-                with open(os.path.join(corpus_input, subcorpus, doc), mode="r") as f_delimited:
+                with open(os.path.join(corpus_input, subcorpus, doc), mode="r", encoding="utf-8") as f_delimited:
                     reader = csv.reader(f_delimited, delimiter=delim)
 
                     for row in reader:
