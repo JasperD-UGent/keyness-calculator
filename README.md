@@ -6,7 +6,7 @@ This module allows you to analyse the keyness of items in a study corpus compare
 
 ## Usage example
 ### Input
-The usage example is presented in the <code>keynessCalculator_example.py</code> file. It contains a usage example for both input types (CSV/TSV files or Python dictionary). The <code>init_keyness_calculator</code> function used to perform the keyness calculations only requires two arguments, namely the study corpus (passed to the first-position <code>input_sc</code> argument) and the reference corpus (passed to the second-position <code>input_rc</code> argument). For CSV/TSV files as input type, the argument is simply the path to the corpus folder; for the Python dictionary as input, you need to construct a 2-tuple of the corpus name followed by the Python dictionary in second position. To learn more about all the possible other arguments which can be passed to the <code>init_keyness_calculator</code> function, have a look at the [source code](https://github.com/JasperD-UGent/keyness-calculator/blob/main/keynessCalculator_example_defs.py).
+The usage example is presented in the <code>keynessCalculator_example.py</code> file. It contains a usage example for both input types (CSV/TSV files or Python dictionary). The <code>init_keyness_calculator</code> function used to perform the keyness calculations only requires two arguments, namely the study corpus (passed to the first-position <code>input_sc</code> argument) and the reference corpus (passed to the second-position <code>input_rc</code> argument). For CSV/TSV files as input type, the argument is simply the path to the corpus folder; for the Python dictionary as input, you need to construct a 2-tuple of the corpus name followed by the Python dictionary in second position. To learn more about all the possible other (keyword) arguments which can be passed to the <code>init_keyness_calculator</code> function, have a look at the [source code](https://github.com/JasperD-UGent/keyness-calculator/blob/main/keynessCalculator_example_defs.py).
 ```python
 def main():
     # CSV/TSV files as input
@@ -43,7 +43,7 @@ def main():
 The output of intermediary steps (frequency dictionaries \[per item and totals] and dispersion values) are saved per corpus into an automatically created <code>prep</code> folder. The final results are stored in the automatically created <code>output</code> folder, in a subdirectory named <code>[study_corpus]\_VS_[reference_corpus]</code>. Four output files are created:
 - An Excel file containing three sheets:
   - "all", in which the values for each item are visualised
-  - "top-N", in which the results for the top-N CKIs (the value for N can be changed in the <code>number_ckis_want_analyse</code> argument) are presented
+  - "top-N", in which the results for the top-N candidate key items or CKIs (the value for N can be changed in the <code>number_ckis_want_analyse</code> argument) are presented
   - "selection", in which the results for the custom selection of items (which can be passed to the function through the <code>selection_items</code> argument) are presented
 - The content of those three Excel sheets in three separate JSON files
 
