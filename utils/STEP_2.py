@@ -134,9 +134,9 @@ def dispersion(
     """STEP_2: apply dispersion metric (DPnorm; Gries, 2008; Lijffijt & Gries, 2012), calculate adjusted frequencies and
     update frequency dictionaries (data stored per corpus in "prep" folder).
     :param corpus_name: name of the corpus.
-    :param d_freq_corpus: frequency dictionary of the entire corpus
-    :param d_freq_cps: frequency dictionary per corpus part
-    :param d_sum_cps: dictionary containing the sum of the words per corpus part
+    :param d_freq_corpus: frequency dictionary of the entire corpus.
+    :param d_freq_cps: frequency dictionary per corpus part.
+    :param d_sum_cps: dictionary containing the sum of the words per corpus part.
     :param desired_pos: tuple of UD tags which should be taken into account in the keyness calculations.
     :return: a tuple containing a frequency dictionary enriched with adjusted frequency values (per item) and a
         frequency dictionary enriched with adjusted frequency values (totals).

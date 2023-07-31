@@ -66,15 +66,13 @@ def init_keyness_calculator(
     :return: dictionary containing results (key "keyness_all" = results for all items; key "keyness_top-N = results
         for top N CKIs; key "keyness_selection" = results for custom selection of items)
     """
-    mapping_custom_to_ud = {
-        "ADJ": "ADJ", "ADV": "ADV", "INTJ": "INTJ", "NOUN": "NOUN", "PROPN": "PROPN", "VERB": "VERB", "ADP": "ADP",
-        "AUX": "AUX", "CCONJ": "CCONJ", "DET": "DET", "NUM": "NUM", "PART": "PART", "PRON": "PRON", "SCONJ": "SCONJ",
-        "PUNCT": "PUNCT", "SYM": "SYM", "X": "X"
-    } if mapping_custom_to_ud is None else mapping_custom_to_ud
+    l_pos_tags_ud = [
+        "ADJ", "ADV", "INTJ", "NOUN", "PROPN", "VERB", "ADP", "AUX", "CCONJ", "DET", "NUM", "PART", "PRON", "SCONJ",
+        "PUNCT", "SYM", "X"
+    ]
+    mapping_custom_to_ud = {pos: pos for pos in l_pos_tags_ud} if mapping_custom_to_ud is None else mapping_custom_to_ud
     mapping_ud_to_custom = {
-        "ADJ": ["ADJ"], "ADV": ["ADV"], "INTJ": ["INTJ"], "NOUN": ["NOUN"], "PROPN": ["PROPN"], "VERB": ["VERB"],
-        "ADP": ["ADP"], "AUX": ["AUX"], "CCONJ": ["CCONJ"], "DET": ["DET"], "NUM": ["NUM"], "PART": ["PART"],
-        "PRON": ["PRON"], "SCONJ": ["SCONJ"], "PUNCT": ["PUNCT"], "SYM": ["SYM"], "X": ["X"]
+        pos: [pos] for pos in l_pos_tags_ud
     } if mapping_ud_to_custom is None else mapping_ud_to_custom
     selection_items = [] if selection_items is None else selection_items
     

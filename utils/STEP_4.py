@@ -23,5 +23,4 @@ def meta(
         "maintain_subcorpora": maintain_subcorpora,
         "divide_number_docs_by": div_n_docs_by
     }
-
-    dump_json(os.path.join("prep", corpus_name), "meta.json", d_meta_corpus)
+    dump_json(os.path.join("prep", corpus_name), f"{corpus_name}_meta.json", d_meta_corpus)

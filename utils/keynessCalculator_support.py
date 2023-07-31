@@ -18,8 +18,8 @@ def check_meta(
     :return: `True` if corresponds, `False` if not.
     """
 
-    if os.path.exists(os.path.join("prep", corpus_name, "meta.json")):
-        d_meta_corpus = load_json(os.path.join("prep", corpus_name, "meta.json"))
+    if os.path.exists(os.path.join("prep", corpus_name, f"{corpus_name}_meta.json")):
+        d_meta_corpus = load_json(os.path.join("prep", corpus_name, f"{corpus_name}_meta.json"))
 
         if tuple(d_meta_corpus["desired_pos"]) == desired_pos \
                 and d_meta_corpus["lemma_or_token"] == lem_or_tok \

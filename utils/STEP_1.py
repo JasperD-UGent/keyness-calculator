@@ -9,8 +9,14 @@ from typing import Dict, Tuple, Union
 
 
 def d_freq(
-        corpus_name, corpus_input, mapping_custom_to_ud, mapping_ud_to_custom, desired_pos, lem_or_tok,
-        maintain_subcorpora, div_n_docs_by
+        corpus_name: str,
+        corpus_input: Union[str, Tuple],
+        mapping_custom_to_ud: Dict,
+        mapping_ud_to_custom: Dict,
+        desired_pos: Tuple,
+        lem_or_tok: str,
+        maintain_subcorpora: bool,
+        div_n_docs_by: int
 ) -> Tuple[Dict, Dict, Dict]:
     """Construct frequency dictionaries (per item).
     :param corpus_name: name of the corpus.
@@ -334,13 +340,13 @@ def sum_words_desired_pos(
             d_sum_cps[part] = {"total_all": 0}
 
             for pos in desired_pos:
-                d_sum_cps[part][pos] = 0
+                d_sum_cps[part][f"total_{pos}"] = 0
 
         for tup in d_freq_cps:
             pos = tup[1]
             part = tup[2]
             d_sum_cps[part]["total_all"] += d_freq_cps[tup]
-            d_sum_cps[part][pos] += d_freq_cps[tup]
+            d_sum_cps[part][f"total_{pos}"] += d_freq_cps[tup]
 
         for part in d_cps:
             d_sum_cps[part]["normalised_total_all"] = \
