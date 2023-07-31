@@ -27,6 +27,7 @@ def init_keyness_calculator(
         keyness_metric: str = "LogRatio",
         number_ckis_want_analyse: int = 100,
         selection_items: Optional[List] = None,
+        encoding_3_col_del: str = "ansi"
 ) -> Dict:
     """Initialise the keyness calculator.
     :param input_sc: study corpus. Either a string to a folder (root = corpus; subdirectories = subcorpora;
@@ -63,6 +64,7 @@ def init_keyness_calculator(
         are saved in "top-N" sheet in Excel file and in separate JSON file). Defaults to 100.
     :param selection_items: list of items you wish to analyse (results for these items are saved in "selection" sheet
         in Excel file and in separate JSON file). Format: tuple of lemma/token and its POS tag.
+    :param encoding_3_col_del: encoding of the corpus documents (when provided in 3-column format). Defaults to "ansi".
     :return: dictionary containing results (key "keyness_all" = results for all items; key "keyness_top-N = results
         for top N CKIs; key "keyness_selection" = results for custom selection of items)
     """
@@ -100,8 +102,8 @@ def init_keyness_calculator(
         d_sum_abs_adj_sc = load_json(os.path.join("prep", name_sc, f"{name_sc}_sum_words_desired_pos_abs_adj.json"))
     else:
         d_freq_sc, d_freq_cps_sc, d_sum_cps_sc = corpora_to_d_freq(
-            name_sc, input_sc, mapping_custom_to_ud, mapping_ud_to_custom, desired_pos, lemma_or_token,
-            maintain_subcorpora, divide_number_docs_by
+            name_sc, input_sc, encoding_3_col_del, mapping_custom_to_ud, mapping_ud_to_custom, desired_pos,
+            lemma_or_token, maintain_subcorpora, divide_number_docs_by
         )
         d_freq_abs_adj_sc, d_sum_abs_adj_sc = dispersion(name_sc, d_freq_sc, d_freq_cps_sc, d_sum_cps_sc, desired_pos)
 
@@ -110,8 +112,8 @@ def init_keyness_calculator(
         d_sum_abs_adj_rc = load_json(os.path.join("prep", name_rc, f"{name_rc}_sum_words_desired_pos_abs_adj.json"))
     else:
         d_freq_rc, d_freq_cps_rc, d_sum_cps_rc = corpora_to_d_freq(
-            name_rc, input_rc, mapping_custom_to_ud, mapping_ud_to_custom, desired_pos, lemma_or_token,
-            maintain_subcorpora, divide_number_docs_by
+            name_rc, input_rc, encoding_3_col_del, mapping_custom_to_ud, mapping_ud_to_custom, desired_pos,
+            lemma_or_token, maintain_subcorpora, divide_number_docs_by
         )
         d_freq_abs_adj_rc, d_sum_abs_adj_rc = dispersion(name_rc, d_freq_rc, d_freq_cps_rc, d_sum_cps_rc, desired_pos)
 
