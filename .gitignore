@@ -1,6 +1,3 @@
-# Git files
-.gitignore
-
 # virtual environment
 /venv
 
