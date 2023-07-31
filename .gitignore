@@ -1,4 +1,5 @@
 # Git files
+.gitignore
 
 # virtual environment
 /venv
@@ -11,6 +12,4 @@
 
 # output and prep files
 /output
-/output_2022_05_30
 /prep
-/prep_2022_05_30
