@@ -14,7 +14,7 @@ def main():
     # CSV/TSV files as input
     input_sc = os.path.join("exampleCorpora", "UD_Spanish-GSD")
     input_rc = os.path.join("exampleCorpora", "UD_Spanish-AnCora")
-    keyness_dictionary_1 = init_keyness_calculator(input_sc, input_rc, encoding_3_col_del="utf-8")
+    keyness_dictionary_1 = init_keyness_calculator(input_sc, input_rc)
     
     # Python dictionary as input
     input_sc = ("SC_singleSubc", {
