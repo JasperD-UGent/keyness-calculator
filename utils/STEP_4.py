@@ -21,6 +21,6 @@ def meta(
         "desired_pos": desired_pos,
         "lemma_or_token": lem_or_tok,
         "maintain_subcorpora": maintain_subcorpora,
-        "divide_number_docs_by": div_n_docs_by
+        "divide_number_docs_by": div_n_docs_by if not maintain_subcorpora else None
     }
     dump_json(os.path.join("prep", corpus_name), f"{corpus_name}_meta.json", d_meta_corpus)
