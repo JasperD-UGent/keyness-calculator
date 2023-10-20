@@ -27,7 +27,7 @@ def init_keyness_calculator(
         keyness_metric: str = "LogRatio",
         number_ckis_want_analyse: int = 100,
         selection_items: Optional[List] = None,
-        encoding_3_col_del: str = "ansi"
+        encoding_3_col_del: str = "utf-8"
 ) -> Dict:
     """Initialise the keyness calculator.
     :param input_sc: study corpus. Either a string to a folder (root = corpus; subdirectories = subcorpora;
@@ -64,7 +64,7 @@ def init_keyness_calculator(
         are saved in "top-N" sheet in Excel file and in separate JSON file). Defaults to 100.
     :param selection_items: list of items you wish to analyse (results for these items are saved in "selection" sheet
         in Excel file and in separate JSON file). Format: tuple of lemma/token and its POS tag.
-    :param encoding_3_col_del: encoding of the corpus documents (when provided in 3-column format). Defaults to "ansi".
+    :param encoding_3_col_del: encoding of the corpus documents (when provided in 3-column format). Defaults to "utf-8".
     :return: dictionary containing results (key "keyness_all" = results for all items; key "keyness_top-N = results
         for top N CKIs; key "keyness_selection" = results for custom selection of items)
     """
