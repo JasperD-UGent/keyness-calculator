@@ -17,6 +17,7 @@ def check_meta(
         divided to arrive at the number of new randomly generated subcorpora.
     :return: `True` if corresponds, `False` if not.
     """
+    div_n_docs_by = div_n_docs_by if maintain_subcorpora else None
 
     if os.path.exists(os.path.join("prep", corpus_name, f"{corpus_name}_meta.json")):
         d_meta_corpus = load_json(os.path.join("prep", corpus_name, f"{corpus_name}_meta.json"))
