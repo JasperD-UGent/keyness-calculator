@@ -17,13 +17,13 @@ def main():
     keyness_dictionary_1 = init_keyness_calculator(input_sc, input_rc, encoding_3_col_del="utf-8")
     
     # Python dictionary as input
-    input_sc = ("SC_singleSubc_2", {
+    input_sc = ("SC_singleSubc", {
         "SC_subcorpus1": [[("tok1", "NOUN", "lem1"), ("tok2", "NOUN", "lem1")],
                           [("tok1", "NOUN", "lem1"), ("tok3", "VERB", "lem2")],
                           [("tok4", "NOUN", "lem3"), ("tok3", "VERB", "lem2")],
                           [("tok4", "NOUN", "lem3"), ("tok3", "VERB", "lem2")]]
     })
-    input_rc = ("RC_multSubc_2", {
+    input_rc = ("RC_multSubc", {
         "RC_subcorpus1": [[("tok1", "NOUN", "lem1"), ("tok2", "NOUN", "lem1")],
                           [("tok1", "NOUN", "lem1"), ("tok3", "VERB", "lem2")],
                           [("tok1", "NOUN", "lem1"), ("tok2", "NOUN", "lem1")],
