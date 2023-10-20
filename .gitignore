@@ -7,6 +7,10 @@
 # PyCharm folders
 /.idea
 
+# old example corpora
+/exampleCorpora/RC_multSubc_1
+/exampleCorpora/SC_singleSubc_1
+
 # output and prep files
 /output
 /prep

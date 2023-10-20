@@ -12,9 +12,9 @@ random.seed(seed)
 
 def main():
     # CSV/TSV files as input
-    input_sc = os.path.join("exampleCorpora", "SC_singleSubc_1")
-    input_rc = os.path.join("exampleCorpora", "RC_multSubc_1")
-    keyness_dictionary_1 = init_keyness_calculator(input_sc, input_rc)
+    input_sc = os.path.join("exampleCorpora", "UD_Spanish-GSD")
+    input_rc = os.path.join("exampleCorpora", "UD_Spanish-AnCora")
+    keyness_dictionary_1 = init_keyness_calculator(input_sc, input_rc, encoding_3_col_del="utf-8")
     
     # Python dictionary as input
     input_sc = ("SC_singleSubc_2", {
