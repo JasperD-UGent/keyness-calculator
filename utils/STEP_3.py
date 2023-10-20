@@ -76,7 +76,7 @@ def keyness(
         norm_freq_1000_sc = freq_sc / sum_sc * 1000
         norm_freq_1000_rc = freq_rc / sum_rc * 1000
 
-        if keyn_metric == "DIFF":
+        if keyn_metric == "%DIFF":
             keyn_score_sc = ((norm_freq_1000_sc - norm_freq_1000_rc) * 100) / norm_freq_1000_rc
             keyn_score_rc = ((norm_freq_1000_rc - norm_freq_1000_sc) * 100) / norm_freq_1000_sc
         elif keyn_metric == "Ratio":
